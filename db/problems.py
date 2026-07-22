@@ -29,6 +29,7 @@ def problem_count() -> int:
 def recommend_problems(
     discord_id: int,
     *,
+    target_rating: int | None = None,
     min_offset: int = 100,
     max_offset: int = 200,
 ) -> sqlite3.Row | None:
@@ -36,9 +37,12 @@ def recommend_problems(
     if not user:
         return None
 
-    rating = user["rating"] or 800
-    low = max(800, rating - min_offset)
-    high = rating + max_offset
+    if target_rating is not None:
+        low = high = target_rating
+    else:
+        rating = user["rating"] or 800
+        low = max(800, rating - min_offset)
+        high = rating + max_offset
 
     with connect() as conn:
         return conn.execute(

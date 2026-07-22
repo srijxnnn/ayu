@@ -9,12 +9,20 @@ class Recommend(commands.Cog):
         self.bot = bot
 
     @commands.command(name="recommend")
-    async def recommend(self, ctx: commands.Context):
-        """suggest one unsolved problem near your rating. usage: ;recommend"""
+    async def recommend(self, ctx: commands.Context, rating: int | None = None):
+        """suggest one unsolved problem near your rating, or of an exact rating.
+        usage: ;recommend [rating]"""
 
         record = db.get_verified_user(ctx.author.id)
         if not record:
             await ctx.reply(f"run `{ctx.prefix}verify` first.", mention_author=False)
+            return
+
+        if rating is not None and (rating < 800 or rating > 3500 or rating % 100 != 0):
+            await ctx.reply(
+                "rating must be a multiple of 100 between 800 and 3500.",
+                mention_author=False,
+            )
             return
 
         if db.problem_count() == 0:
@@ -29,7 +37,7 @@ class Recommend(commands.Cog):
             db.upsert_problems(problems)
             await msg.delete()
 
-        problem = db.recommend_problems(ctx.author.id)
+        problem = db.recommend_problems(ctx.author.id, target_rating=rating)
         if not problem:
             await ctx.reply(
                 f"no matching problems found. try `{ctx.prefix}sync` or ask an admin "
@@ -43,9 +51,10 @@ class Recommend(commands.Cog):
             f"https://codeforces.com/problemset/problem/"
             f"{problem['contest_id']}/{problem['problem_index']}"
         )
-        user_rating = record["rating"] or 800
+        shown_rating = rating if rating is not None else (record["rating"] or 800)
+        label = "target rating" if rating is not None else "rating"
         await ctx.reply(
-            f"recommended for **{record['cf_handle']}** (rating {user_rating}):\n"
+            f"recommended for **{record['cf_handle']}** ({label} {shown_rating}):\n"
             f"[{problem['contest_id']}{problem['problem_index']}]({url}) "
             f"**{problem['name']}** ({problem_rating})",
             mention_author=False,

@@ -2,7 +2,6 @@ import re
 import sqlite3
 from datetime import date, datetime
 
-import discord
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 DEFAULT_TIMEZONE = "Asia/Kolkata"
@@ -71,18 +70,16 @@ def problem_url(contest_id: int, problem_index: str) -> str:
     return f"https://codeforces.com/problemset/problem/{contest_id}/{problem_index}"
 
 
-def daily_problem_embed(problem: sqlite3.Row) -> discord.Embed:
+def daily_problem_message(problem: sqlite3.Row) -> str:
     rating = problem["rating"] if problem["rating"] is not None else "?"
     contest_id = problem["contest_id"]
     problem_index = problem["problem_index"]
     url = problem_url(contest_id, problem_index)
 
-    embed = discord.Embed(
-        title=f"daily practice problem - {contest_id}{problem_index}",
-        description=f"**{problem['name']}**",
-        url=url,
-        color=0x1F8ACB,
+    return (
+        f"**daily practice problem - {contest_id}{problem_index}**\n"
+        f"**{problem['name']}**\n"
+        f"rating: {rating}\n"
+        f"{url}\n"
+        f"_solve it and share your approach!_"
     )
-    embed.add_field(name="rating", value=str(rating), inline=True)
-    embed.set_footer(text="solve it and share your approach!")
-    return embed

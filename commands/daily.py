@@ -6,7 +6,7 @@ from helpers.daily import (
     DEFAULT_MAX_RATING,
     DEFAULT_MIN_RATING,
     DEFAULT_TIMEZONE,
-    daily_problem_embed,
+    daily_problem_message,
     format_rating_phrase,
     format_rating_value,
     is_scheduled_now,
@@ -58,7 +58,7 @@ class Daily(commands.Cog):
         if channel is None:
             return False
 
-        await channel.send(embed=daily_problem_embed(problem))
+        await channel.send(daily_problem_message(problem))
         db.record_daily_post(today, problem["contest_id"], problem["problem_index"])
         return True
 

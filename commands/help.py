@@ -34,6 +34,8 @@ class Help(commands.Cog):
             f"`{prefix}sync` - refresh rating, rank role, and solved problems",
             f"`{prefix}profile` - show your stored codeforces stats",
             f"`{prefix}gimme [rating]` - unsolved problem near your rating, or exact rating",
+            f"`{prefix}daily set #channel HH:MM [min] [max]` - schedule daily problem (admin)",
+            f"`{prefix}daily status` - show daily problem schedule",
             f"`{prefix}help [command]` - show this list or help for one command",
             f"`{prefix}cacheproblems` - cache CF problemset (admin only)",
         ]

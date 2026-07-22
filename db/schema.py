@@ -33,5 +33,22 @@ def init_db() -> None:
                 tags TEXT NOT NULL DEFAULT '[]',
                 PRIMARY KEY (contest_id, problem_index)
             );
+
+            CREATE TABLE IF NOT EXISTS daily_problem_config (
+                id INTEGER PRIMARY KEY CHECK (id = 1),
+                channel_id INTEGER NOT NULL,
+                hour INTEGER NOT NULL,
+                minute INTEGER NOT NULL,
+                timezone TEXT NOT NULL DEFAULT 'Asia/Kolkata',
+                min_rating INTEGER NOT NULL DEFAULT 1000,
+                max_rating INTEGER NOT NULL DEFAULT 1400,
+                enabled INTEGER NOT NULL DEFAULT 1
+            );
+
+            CREATE TABLE IF NOT EXISTS daily_problems_posted (
+                posted_date TEXT PRIMARY KEY,
+                contest_id INTEGER NOT NULL,
+                problem_index TEXT NOT NULL
+            );
             """
         )

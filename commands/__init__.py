@@ -6,4 +6,5 @@ EXTENSIONS = [
     "commands.recommend",
     "commands.profile",
     "commands.cacheproblems",
+    "commands.daily",
 ]

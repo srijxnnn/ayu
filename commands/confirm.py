@@ -54,7 +54,7 @@ class Confirm(commands.Cog):
         await ctx.reply(
             f"verified **{data['handle']}** - **{rank.title()}** ({rating_display}). "
             f"synced **{solved_count}** solved problems.\n"
-            f"run `{ctx.prefix}recommend` to get problem suggestions.",
+            f"run `{ctx.prefix}gimme` to get problem suggestions.",
             mention_author=False,
         )
 

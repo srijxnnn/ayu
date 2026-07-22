@@ -8,10 +8,10 @@ class Recommend(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-    @commands.command(name="recommend")
+    @commands.command(name="gimme")
     async def recommend(self, ctx: commands.Context, rating: int | None = None):
         """suggest one unsolved problem near your rating, or of an exact rating.
-        usage: ;recommend [rating]"""
+        usage: ;gimme [rating]"""
 
         record = db.get_verified_user(ctx.author.id)
         if not record:

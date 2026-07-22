@@ -33,7 +33,7 @@ class Help(commands.Cog):
             f"`{prefix}confirm` - finish verification after setting token on CF",
             f"`{prefix}sync` - refresh rating, rank role, and solved problems",
             f"`{prefix}profile` - show your stored codeforces stats",
-            f"`{prefix}recommend [rating]` - unsolved problem near your rating, or exact rating",
+            f"`{prefix}gimme [rating]` - unsolved problem near your rating, or exact rating",
             f"`{prefix}help [command]` - show this list or help for one command",
             f"`{prefix}cacheproblems` - cache CF problemset (admin only)",
         ]

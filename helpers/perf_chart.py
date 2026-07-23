@@ -21,7 +21,7 @@ RATING_BANDS = [
     (3000, 5000, "#AA0B0F"),
 ]
 
-LINE_COLOR = "#337ab7"
+LINE_COLOR = "#EBC245"
 Y_MIN_TOP = 2100
 
 
@@ -62,7 +62,7 @@ def render_perf_chart(
     ax.xaxis.set_major_locator(mdates.AutoDateLocator())
     ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m"))
     ax.yaxis.set_major_locator(plt.MultipleLocator(500))
-    ax.grid(True, color="white", linewidth=1.2, zorder=1)
+    ax.grid(True, color="#BCBCBC", linewidth=1.2, zorder=1)
     ax.tick_params(colors="#444444")
     plt.setp(ax.get_xticklabels(), rotation=30, ha="right")
 

@@ -55,8 +55,9 @@ class Recommend(commands.Cog):
         label = "target rating" if rating is not None else "rating"
         await ctx.reply(
             f"recommended for **{record['cf_handle']}** ({label} {shown_rating}):\n"
-            f"[{problem['contest_id']}{problem['problem_index']}]({url}) "
-            f"**{problem['name']}** ({problem_rating})",
+            f"**{problem['contest_id']}{problem['problem_index']} - "
+            f"{problem['name']}** ({problem_rating})\n"
+            f"{url}",
             mention_author=False,
         )
 

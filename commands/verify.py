@@ -25,7 +25,7 @@ class Verify(commands.Cog):
         )
 
         try:
-            await ctx.author.send(instructions)
+            await ctx.author.send(instructions, suppress_embeds=True)
             await ctx.reply(
                 "check your dms for verification instructions.", mention_author=False
             )

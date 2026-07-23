@@ -16,7 +16,23 @@ intents = discord.Intents.default()
 intents.message_content = True
 intents.members = True
 
-bot = commands.Bot(command_prefix=PREFIX, intents=intents, help_command=None)
+
+class AyuContext(commands.Context):
+    async def send(self, *args, **kwargs):
+        kwargs.setdefault("suppress_embeds", True)
+        return await super().send(*args, **kwargs)
+
+    async def reply(self, *args, **kwargs):
+        kwargs.setdefault("suppress_embeds", True)
+        return await super().reply(*args, **kwargs)
+
+
+class AyuBot(commands.Bot):
+    async def get_context(self, message, *, cls=AyuContext):
+        return await super().get_context(message, cls=cls)
+
+
+bot = AyuBot(command_prefix=PREFIX, intents=intents, help_command=None)
 
 
 @bot.event

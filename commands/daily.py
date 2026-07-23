@@ -60,7 +60,7 @@ class Daily(commands.Cog):
         if channel is None:
             return False
 
-        await channel.send(daily_problem_message(problem))
+        await channel.send(daily_problem_message(problem), suppress_embeds=True)
         db.record_daily_post(today, problem["contest_id"], problem["problem_index"])
         return True
 

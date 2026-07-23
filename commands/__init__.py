@@ -5,6 +5,7 @@ EXTENSIONS = [
     "commands.sync",
     "commands.recommend",
     "commands.profile",
+    "commands.plot",
     "commands.cacheproblems",
     "commands.daily",
     "commands.contests",

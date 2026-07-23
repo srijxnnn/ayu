@@ -26,6 +26,14 @@ def problem_count() -> int:
         return conn.execute("SELECT COUNT(*) FROM problems").fetchone()[0]
 
 
+def get_ratings_map() -> dict[tuple[int, str], int | None]:
+    with connect() as conn:
+        rows = conn.execute(
+            "SELECT contest_id, problem_index, rating FROM problems"
+        ).fetchall()
+    return {(row["contest_id"], row["problem_index"]): row["rating"] for row in rows}
+
+
 def recommend_problems(
     discord_id: int,
     *,

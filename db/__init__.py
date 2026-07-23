@@ -18,7 +18,7 @@ from db.daily import (
     update_daily_timezone,
     upsert_daily_config,
 )
-from db.problems import problem_count, recommend_problems, upsert_problems
+from db.problems import get_ratings_map, problem_count, recommend_problems, upsert_problems
 from db.schema import init_db
 from db.solved import get_solved_keys, replace_solved_problems
 from db.users import get_verified_user, upsert_verified_user
@@ -33,6 +33,7 @@ __all__ = [
     "get_daily_config",
     "get_daily_streak",
     "get_posted_daily_problem",
+    "get_ratings_map",
     "get_solved_keys",
     "get_verified_user",
     "init_db",

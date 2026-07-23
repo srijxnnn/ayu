@@ -33,6 +33,7 @@ class Help(commands.Cog):
             f"`{prefix}confirm` - finish verification after setting token on CF",
             f"`{prefix}sync` - refresh rating, rank role, and solved problems",
             f"`{prefix}profile` - show your stored codeforces stats",
+            f"`{prefix}plot perf` - chart solved problem ratings over time",
             f"`{prefix}gimme [rating]` - unsolved problem near your rating, or exact rating",
             f"`{prefix}daily set #channel HH:MM [min] [max]` - schedule daily problem (admin)",
             f"`{prefix}daily done` - mark today's daily as solved and update streak",

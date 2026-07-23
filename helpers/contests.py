@@ -1,3 +1,5 @@
+import discord
+
 from datetime import UTC, datetime
 
 REMINDER_SECONDS = 3600
@@ -16,6 +18,10 @@ def is_reminder_due(start_time_seconds: int) -> bool:
         <= delta
         <= REMINDER_SECONDS + REMINDER_TOLERANCE
     )
+
+
+def role_ping_mentions(role: discord.Role) -> discord.AllowedMentions:
+    return discord.AllowedMentions(roles=[role])
 
 
 def contest_url(contest_id: int) -> str:

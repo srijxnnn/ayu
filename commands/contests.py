@@ -3,7 +3,11 @@ from discord.ext import commands, tasks
 
 import db
 from codeforces.contests import get_upcoming_contests
-from helpers.contests import contest_reminder_message, is_reminder_due
+from helpers.contests import (
+    contest_reminder_message,
+    is_reminder_due,
+    role_ping_mentions,
+)
 
 
 class Contests(commands.Cog):
@@ -41,7 +45,10 @@ class Contests(commands.Cog):
             if db.already_reminded(contest_id):
                 continue
 
-            await channel.send(contest_reminder_message(contest, role.mention))
+            await channel.send(
+                contest_reminder_message(contest, role.mention),
+                allowed_mentions=role_ping_mentions(role),
+            )
             db.record_contest_reminder(contest_id)
 
     @contest_reminder_task.before_loop
@@ -122,7 +129,8 @@ class Contests(commands.Cog):
         await channel.send(
             "**contest reminder (test)**\n\n"
             "this is a test ping — real reminders go out 1 hour before each contest.\n\n"
-            f"{role.mention}"
+            f"{role.mention}",
+            allowed_mentions=role_ping_mentions(role),
         )
         await ctx.reply(
             f"sent test reminder to {channel.mention}.",

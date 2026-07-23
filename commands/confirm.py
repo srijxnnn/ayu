@@ -52,7 +52,7 @@ class Confirm(commands.Cog):
 
         rating_display = rating if rating is not None else "unrated"
         await ctx.reply(
-            f"verified **{data['handle']}** - **{rank.title()}** ({rating_display}). "
+            f"verified **{data['handle']}** - **{rank}** ({rating_display}). "
             f"synced **{solved_count}** solved problems.",
             mention_author=False,
         )

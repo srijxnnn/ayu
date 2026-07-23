@@ -58,6 +58,22 @@ def today_iso(timezone: str) -> str:
     return today_in_timezone(timezone).isoformat()
 
 
+def effective_daily_streak(
+    streak: int,
+    last_completed_date: str | None,
+    timezone: str,
+) -> int:
+    if not last_completed_date:
+        return 0
+
+    today = today_in_timezone(timezone)
+    last = date.fromisoformat(last_completed_date)
+    days_since = (today - last).days
+    if days_since <= 1:
+        return streak
+    return 0
+
+
 def is_scheduled_now(config: sqlite3.Row) -> bool:
     try:
         now = now_in_timezone(config["timezone"])
@@ -81,5 +97,5 @@ def daily_problem_message(problem: sqlite3.Row) -> str:
         f"**{problem['name']}**\n"
         f"rating: {rating}\n"
         f"{url}\n"
-        f"_solve it and share your approach!_"
+        f"_solve it and run `;daily done` when finished!_"
     )

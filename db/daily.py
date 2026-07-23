@@ -1,4 +1,5 @@
 import sqlite3
+from datetime import date
 
 from db.connection import connect
 
@@ -105,6 +106,68 @@ def record_daily_post(
             """,
             (posted_date, contest_id, problem_index),
         )
+
+
+def get_posted_daily_problem(posted_date: str) -> sqlite3.Row | None:
+    with connect() as conn:
+        return conn.execute(
+            """
+            SELECT posted_date, contest_id, problem_index
+            FROM daily_problems_posted
+            WHERE posted_date = ?
+            """,
+            (posted_date,),
+        ).fetchone()
+
+
+def get_daily_streak(discord_id: int) -> sqlite3.Row | None:
+    with connect() as conn:
+        return conn.execute(
+            """
+            SELECT streak, last_completed_date
+            FROM daily_streaks
+            WHERE discord_id = ?
+            """,
+            (discord_id,),
+        ).fetchone()
+
+
+def record_daily_completion(discord_id: int, completed_date: str) -> tuple[int, bool]:
+    """Return the streak count and whether today was already marked done."""
+    with connect() as conn:
+        row = conn.execute(
+            """
+            SELECT streak, last_completed_date
+            FROM daily_streaks
+            WHERE discord_id = ?
+            """,
+            (discord_id,),
+        ).fetchone()
+
+        if row and row["last_completed_date"] == completed_date:
+            return row["streak"], True
+
+        if row:
+            last = date.fromisoformat(row["last_completed_date"])
+            today = date.fromisoformat(completed_date)
+            if (today - last).days == 1:
+                new_streak = row["streak"] + 1
+            else:
+                new_streak = 1
+        else:
+            new_streak = 1
+
+        conn.execute(
+            """
+            INSERT INTO daily_streaks (discord_id, streak, last_completed_date)
+            VALUES (?, ?, ?)
+            ON CONFLICT(discord_id) DO UPDATE SET
+                streak = excluded.streak,
+                last_completed_date = excluded.last_completed_date
+            """,
+            (discord_id, new_streak, completed_date),
+        )
+        return new_streak, False
 
 
 def pick_daily_problem(

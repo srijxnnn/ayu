@@ -35,6 +35,7 @@ class Help(commands.Cog):
             f"`{prefix}profile` - show your stored codeforces stats",
             f"`{prefix}gimme [rating]` - unsolved problem near your rating, or exact rating",
             f"`{prefix}daily set #channel HH:MM [min] [max]` - schedule daily problem (admin)",
+            f"`{prefix}daily done` - mark today's daily as solved and update streak",
             f"`{prefix}daily status` - show daily problem schedule",
             f"`{prefix}help [command]` - show this list or help for one command",
             f"`{prefix}cacheproblems` - cache CF problemset (admin only)",

@@ -26,3 +26,16 @@ async def save_user_data(
         solved_count = db.replace_solved_problems(discord_id, solved)
 
     return rank, rating, solved_count
+
+
+async def has_solved_problem(
+    discord_id: int,
+    cf_handle: str,
+    contest_id: int,
+    problem_index: str,
+) -> bool:
+    if (contest_id, problem_index) in db.get_solved_keys(discord_id):
+        return True
+
+    solved = await get_solved_problems(cf_handle)
+    return (contest_id, problem_index) in solved

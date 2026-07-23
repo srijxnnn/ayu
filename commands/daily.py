@@ -11,11 +11,13 @@ from helpers.daily import (
     format_rating_value,
     is_scheduled_now,
     parse_time,
+    problem_url,
     today_iso,
     validate_rating_range,
     validate_timezone,
 )
 from helpers.problems import ensure_problem_cache
+from helpers.users import has_solved_problem
 
 
 class Daily(commands.Cog):
@@ -64,7 +66,7 @@ class Daily(commands.Cog):
 
     @commands.group(name="daily", invoke_without_command=True)
     async def daily(self, ctx: commands.Context):
-        """configure automatic daily practice problems. usage: ;daily set/status/stop/now"""
+        """configure automatic daily practice problems. usage: ;daily set/status/done/stop/now"""
         await ctx.reply(
             f"usage: `{ctx.prefix}daily set #channel HH:MM [min] [max]` - "
             f"see `{ctx.prefix}help daily` for more.",
@@ -158,6 +160,59 @@ class Daily(commands.Cog):
             await ctx.reply(
                 "no daily problem schedule is configured.", mention_author=False
             )
+
+    @daily.command(name="done")
+    async def daily_done(self, ctx: commands.Context):
+        """mark today's daily problem as solved and update your streak.
+        usage: ;daily done"""
+
+        record = db.get_verified_user(ctx.author.id)
+        if not record:
+            await ctx.reply(f"run `{ctx.prefix}verify` first.", mention_author=False)
+            return
+
+        config = db.get_daily_config()
+        timezone = config["timezone"] if config else DEFAULT_TIMEZONE
+        today = today_iso(timezone)
+
+        posted = db.get_posted_daily_problem(today)
+        if not posted:
+            await ctx.reply(
+                "no daily problem has been posted today yet.",
+                mention_author=False,
+            )
+            return
+
+        contest_id = posted["contest_id"]
+        problem_index = posted["problem_index"]
+
+        if not await has_solved_problem(
+            ctx.author.id,
+            record["cf_handle"],
+            contest_id,
+            problem_index,
+        ):
+            url = problem_url(contest_id, problem_index)
+            await ctx.reply(
+                f"you haven't solved today's daily problem "
+                f"**{contest_id}{problem_index}** yet.\n{url}",
+                mention_author=False,
+            )
+            return
+
+        streak, already_done = db.record_daily_completion(ctx.author.id, today)
+        if already_done:
+            await ctx.reply(
+                f"you already marked today's daily as done. "
+                f"streak: **{streak}** day{'s' if streak != 1 else ''}.",
+                mention_author=False,
+            )
+            return
+
+        await ctx.reply(
+            f"daily complete! streak: **{streak}** day{'s' if streak != 1 else ''}.",
+            mention_author=False,
+        )
 
     @daily.command(name="status")
     async def daily_status(self, ctx: commands.Context):

@@ -50,5 +50,14 @@ def init_db() -> None:
                 contest_id INTEGER NOT NULL,
                 problem_index TEXT NOT NULL
             );
+
+            CREATE TABLE IF NOT EXISTS daily_streaks (
+                discord_id INTEGER PRIMARY KEY,
+                streak INTEGER NOT NULL DEFAULT 0,
+                last_completed_date TEXT NOT NULL,
+                FOREIGN KEY (discord_id)
+                    REFERENCES verified_users(discord_id)
+                    ON DELETE CASCADE
+            );
             """
         )

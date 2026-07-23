@@ -59,5 +59,16 @@ def init_db() -> None:
                     REFERENCES verified_users(discord_id)
                     ON DELETE CASCADE
             );
+
+            CREATE TABLE IF NOT EXISTS contest_reminder_config (
+                id INTEGER PRIMARY KEY CHECK (id = 1),
+                channel_id INTEGER NOT NULL,
+                role_id INTEGER NOT NULL,
+                enabled INTEGER NOT NULL DEFAULT 1
+            );
+
+            CREATE TABLE IF NOT EXISTS contest_reminders_sent (
+                contest_id INTEGER PRIMARY KEY
+            );
             """
         )

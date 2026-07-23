@@ -7,4 +7,5 @@ EXTENSIONS = [
     "commands.profile",
     "commands.cacheproblems",
     "commands.daily",
+    "commands.contests",
 ]

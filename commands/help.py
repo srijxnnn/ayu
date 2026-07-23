@@ -37,6 +37,9 @@ class Help(commands.Cog):
             f"`{prefix}daily set #channel HH:MM [min] [max]` - schedule daily problem (admin)",
             f"`{prefix}daily done` - mark today's daily as solved and update streak",
             f"`{prefix}daily status` - show daily problem schedule",
+            f"`{prefix}contest set #channel @role` - contest reminders 1hr before (admin)",
+            f"`{prefix}contest status` - show contest reminder config",
+            f"`{prefix}contest test` - send a test reminder ping (admin)",
             f"`{prefix}help [command]` - show this list or help for one command",
             f"`{prefix}cacheproblems` - cache CF problemset (admin only)",
         ]

@@ -9,17 +9,20 @@ import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
 
 RATING_BANDS = [
-    (0, 1200, "#dddddd"),
-    (1200, 1400, "#aaffaa"),
-    (1400, 1600, "#aaffff"),
-    (1600, 1900, "#aaaaff"),
-    (1900, 2100, "#ffaaff"),
-    (2100, 2300, "#ffcc88"),
-    (2300, 2400, "#ffbb55"),
-    (2400, 5000, "#ff8888"),
+    (0, 1200, "#CCCCCC"),
+    (1200, 1400, "#76FF77"),
+    (1400, 1600, "#77DDBB"),
+    (1600, 1900, "#AAAAFC"),
+    (1900, 2100, "#FF88FC"),
+    (2100, 2300, "#FFCC88"),
+    (2300, 2400, "#FFBB55"),
+    (2400, 2600, "#FF7777"),
+    (2600, 3000, "#FF3333"),
+    (3000, 5000, "#AA0B0F"),
 ]
 
 LINE_COLOR = "#337ab7"
+Y_MIN_TOP = 2100
 
 
 def render_perf_chart(
@@ -34,7 +37,7 @@ def render_perf_chart(
     ax.set_facecolor("#eef2f7")
 
     y_min = max(500, min(ratings) - 200)
-    y_max = min(3500, max(ratings) + 200)
+    y_max = min(3500, max(max(ratings) + 200, Y_MIN_TOP))
     for low, high, color in RATING_BANDS:
         band_low = max(low, y_min)
         band_high = min(high, y_max)

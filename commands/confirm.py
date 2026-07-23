@@ -53,8 +53,7 @@ class Confirm(commands.Cog):
         rating_display = rating if rating is not None else "unrated"
         await ctx.reply(
             f"verified **{data['handle']}** - **{rank.title()}** ({rating_display}). "
-            f"synced **{solved_count}** solved problems.\n"
-            f"run `{ctx.prefix}gimme` to get problem suggestions.",
+            f"synced **{solved_count}** solved problems.",
             mention_author=False,
         )
 

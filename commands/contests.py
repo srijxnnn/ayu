@@ -130,7 +130,7 @@ class Contests(commands.Cog):
 
         await channel.send(
             "**contest reminder (test)**\n\n"
-            "this is a test ping — real reminders go out 1 hour before each contest.\n\n"
+            "this is a test ping - real reminders go out 1 hour before each contest.\n\n"
             f"{role.mention}",
             allowed_mentions=role_ping_mentions(role),
             suppress_embeds=True,

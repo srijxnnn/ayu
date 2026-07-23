@@ -8,6 +8,7 @@ from db.contests import (
 from db.daily import (
     already_posted_today,
     disable_daily_config,
+    get_all_daily_streaks,
     get_daily_config,
     get_daily_streak,
     get_posted_daily_problem,
@@ -28,6 +29,7 @@ __all__ = [
     "disable_contest_reminder_config",
     "disable_daily_config",
     "get_contest_reminder_config",
+    "get_all_daily_streaks",
     "get_daily_config",
     "get_daily_streak",
     "get_posted_daily_problem",

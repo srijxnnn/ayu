@@ -6,12 +6,13 @@ from helpers.daily import (
     DEFAULT_MAX_RATING,
     DEFAULT_MIN_RATING,
     DEFAULT_TIMEZONE,
+    build_daily_leaderboard_entries,
     daily_problem_message,
+    format_daily_leaderboard,
     format_rating_phrase,
     format_rating_value,
     is_scheduled_now,
     parse_time,
-    problem_url,
     today_iso,
     validate_rating_range,
     validate_timezone,
@@ -66,7 +67,7 @@ class Daily(commands.Cog):
 
     @commands.group(name="daily", invoke_without_command=True)
     async def daily(self, ctx: commands.Context):
-        """configure automatic daily practice problems. usage: ;daily set/status/done/stop/now"""
+        """configure automatic daily practice problems. usage: ;daily set/status/done/leaderboard/stop/now"""
         await ctx.reply(
             f"usage: `{ctx.prefix}daily set #channel HH:MM [min] [max]` - "
             f"see `{ctx.prefix}help daily` for more.",
@@ -210,6 +211,24 @@ class Daily(commands.Cog):
 
         await ctx.reply(
             f"daily complete! streak: **{streak}** day{'s' if streak != 1 else ''}.",
+            mention_author=False,
+        )
+
+    @daily.command(name="leaderboard")
+    async def daily_leaderboard(self, ctx: commands.Context, page: int = 1):
+        """show daily streak leaderboard. usage: ;daily leaderboard [page]"""
+
+        if page < 1:
+            await ctx.reply("page must be at least 1.", mention_author=False)
+            return
+
+        config = db.get_daily_config()
+        timezone = config["timezone"] if config else DEFAULT_TIMEZONE
+        rows = db.get_all_daily_streaks()
+        entries = build_daily_leaderboard_entries(rows, timezone)
+
+        await ctx.reply(
+            format_daily_leaderboard(entries, page=page),
             mention_author=False,
         )
 

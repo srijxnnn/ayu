@@ -132,6 +132,17 @@ def get_daily_streak(discord_id: int) -> sqlite3.Row | None:
         ).fetchone()
 
 
+def get_all_daily_streaks() -> list[sqlite3.Row]:
+    with connect() as conn:
+        return conn.execute(
+            """
+            SELECT s.discord_id, s.streak, s.last_completed_date, u.cf_handle
+            FROM daily_streaks s
+            JOIN verified_users u ON u.discord_id = s.discord_id
+            """
+        ).fetchall()
+
+
 def record_daily_completion(discord_id: int, completed_date: str) -> tuple[int, bool]:
     """Return the streak count and whether today was already marked done."""
     with connect() as conn:

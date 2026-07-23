@@ -39,7 +39,7 @@ class Sync(commands.Cog):
 
         rating_display = rating if rating is not None else "unrated"
         await ctx.reply(
-            f"synced **{record['cf_handle']}** - **{rank.title()}** ({rating_display}), "
+            f"synced **{record['cf_handle']}** - **{rank}** ({rating_display}), "
             f"**{solved_count}** solved problems.",
             mention_author=False,
         )

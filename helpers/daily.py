@@ -7,6 +7,7 @@ from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 DEFAULT_TIMEZONE = "Asia/Kolkata"
 DEFAULT_MIN_RATING = 1000
 DEFAULT_MAX_RATING = 1400
+LEADERBOARD_PAGE_SIZE = 10
 
 TIME_PATTERN = re.compile(r"^([01]?\d|2[0-3]):([0-5]\d)$")
 
@@ -84,6 +85,47 @@ def is_scheduled_now(config: sqlite3.Row) -> bool:
 
 def problem_url(contest_id: int, problem_index: str) -> str:
     return f"https://codeforces.com/problemset/problem/{contest_id}/{problem_index}"
+
+
+def build_daily_leaderboard_entries(
+    rows: list[sqlite3.Row],
+    timezone: str,
+) -> list[tuple[str, int]]:
+    entries: list[tuple[str, int]] = []
+    for row in rows:
+        streak = effective_daily_streak(
+            row["streak"],
+            row["last_completed_date"],
+            timezone,
+        )
+        entries.append((row["cf_handle"], streak))
+    entries.sort(key=lambda entry: (-entry[1], entry[0].lower()))
+    return entries
+
+
+def format_daily_leaderboard(
+    entries: list[tuple[str, int]],
+    *,
+    page: int,
+    page_size: int = LEADERBOARD_PAGE_SIZE,
+) -> str:
+    if not entries:
+        return "no one has a daily streak yet."
+
+    start = (page - 1) * page_size
+    page_entries = entries[start : start + page_size]
+    if not page_entries:
+        total_pages = (len(entries) + page_size - 1) // page_size
+        return (
+            f"page **{page}** is empty "
+            f"(there are **{total_pages}** page{'s' if total_pages != 1 else ''})."
+        )
+
+    lines = [f"**daily streak leaderboard** (page {page})\n"]
+    for rank, (handle, streak) in enumerate(page_entries, start=start + 1):
+        day_word = "day" if streak == 1 else "days"
+        lines.append(f"**{rank}.** {handle} - **{streak}** {day_word}")
+    return "\n".join(lines)
 
 
 def daily_problem_message(problem: sqlite3.Row) -> str:

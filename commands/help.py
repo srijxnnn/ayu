@@ -36,6 +36,7 @@ class Help(commands.Cog):
             f"`{prefix}gimme [rating]` - unsolved problem near your rating, or exact rating",
             f"`{prefix}daily set #channel HH:MM [min] [max]` - schedule daily problem (admin)",
             f"`{prefix}daily done` - mark today's daily as solved and update streak",
+            f"`{prefix}daily leaderboard [page]` - daily streak leaderboard (10 per page)",
             f"`{prefix}daily status` - show daily problem schedule",
             f"`{prefix}contest set #channel @role` - contest reminders 1hr before (admin)",
             f"`{prefix}contest status` - show contest reminder config",

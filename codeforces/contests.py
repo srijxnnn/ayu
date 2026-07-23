@@ -14,4 +14,5 @@ async def get_upcoming_contests() -> list[dict]:
             continue
         contests.append(contest)
 
+    contests.sort(key=lambda contest: contest["startTimeSeconds"])
     return contests

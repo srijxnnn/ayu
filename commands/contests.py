@@ -5,6 +5,7 @@ import db
 from codeforces.contests import get_upcoming_contests
 from helpers.contests import (
     contest_reminder_message,
+    format_upcoming_contests,
     is_reminder_due,
     role_ping_mentions,
 )
@@ -57,7 +58,7 @@ class Contests(commands.Cog):
 
     @commands.group(name="contest", invoke_without_command=True)
     async def contest(self, ctx: commands.Context):
-        """configure contest reminders. usage: ;contest set/status/stop/test"""
+        """configure contest reminders. usage: ;contest set/status/stop/test/upcoming"""
         await ctx.reply(
             f"usage: `{ctx.prefix}contest set #channel @role` - "
             f"see `{ctx.prefix}help contest` for more.",
@@ -134,6 +135,30 @@ class Contests(commands.Cog):
         )
         await ctx.reply(
             f"sent test reminder to {channel.mention}.",
+            mention_author=False,
+        )
+
+    @contest.command(name="upcoming")
+    async def contest_upcoming(self, ctx: commands.Context, count: int = 5):
+        """list upcoming codeforces contests. usage: ;contest upcoming [count]"""
+
+        if count < 1 or count > 10:
+            await ctx.reply(
+                "count must be between 1 and 10.",
+                mention_author=False,
+            )
+            return
+
+        contests = await get_upcoming_contests()
+        if not contests:
+            await ctx.reply(
+                "could not fetch contests or none are scheduled.",
+                mention_author=False,
+            )
+            return
+
+        await ctx.reply(
+            format_upcoming_contests(contests, limit=count),
             mention_author=False,
         )
 

@@ -1,9 +1,6 @@
 import discord
 
 from datetime import UTC, datetime
-from zoneinfo import ZoneInfo
-
-from helpers.daily import DEFAULT_TIMEZONE
 
 REMINDER_SECONDS = 3600
 REMINDER_TOLERANCE = 60
@@ -31,31 +28,14 @@ def contest_url(contest_id: int) -> str:
     return f"https://codeforces.com/contests/{contest_id}"
 
 
-def format_contest_start(
-    start_time_seconds: int, timezone: str = DEFAULT_TIMEZONE
-) -> str:
-    dt = datetime.fromtimestamp(start_time_seconds, tz=ZoneInfo(timezone))
-    return dt.strftime("%a %d %b %Y, %H:%M %Z")
+def format_contest_start(start_time_seconds: int) -> str:
+    dt = datetime.fromtimestamp(start_time_seconds, tz=UTC)
+    return discord.utils.format_dt(dt, style="F")
 
 
 def format_time_until(start_time_seconds: int) -> str:
-    delta = seconds_until_start(start_time_seconds)
-    if delta <= 0:
-        return "starting now"
-
-    days, remainder = divmod(delta, 86400)
-    hours, remainder = divmod(remainder, 3600)
-    minutes = remainder // 60
-
-    parts: list[str] = []
-    if days:
-        parts.append(f"{days}d")
-    if hours:
-        parts.append(f"{hours}h")
-    if minutes or not parts:
-        parts.append(f"{minutes}m")
-
-    return "in " + " ".join(parts)
+    dt = datetime.fromtimestamp(start_time_seconds, tz=UTC)
+    return discord.utils.format_dt(dt, style="R")
 
 
 def format_upcoming_contests(contests: list[dict], *, limit: int = 5) -> str:

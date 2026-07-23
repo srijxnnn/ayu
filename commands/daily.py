@@ -192,10 +192,9 @@ class Daily(commands.Cog):
             contest_id,
             problem_index,
         ):
-            url = problem_url(contest_id, problem_index)
             await ctx.reply(
                 f"you haven't solved today's daily problem "
-                f"**{contest_id}{problem_index}** yet.\n{url}",
+                f"**{contest_id}{problem_index}** yet.",
                 mention_author=False,
             )
             return

@@ -21,7 +21,7 @@ RATING_BANDS = [
     (3000, 5000, "#AA0B0F"),
 ]
 
-LINE_COLOR = "#EBC245"
+LINE_COLOR = "#337ab7"
 Y_MIN_TOP = 2100
 
 

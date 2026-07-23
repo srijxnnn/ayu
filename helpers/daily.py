@@ -93,8 +93,8 @@ def daily_problem_message(problem: sqlite3.Row) -> str:
     url = problem_url(contest_id, problem_index)
 
     return (
-        f"**daily practice problem - {contest_id}{problem_index}**\n"
-        f"**{problem['name']}**\n"
+        f"**daily practice problem**\n\n"
+        f"**{contest_id}{problem_index} - {problem['name']}**\n"
         f"rating: {rating}\n"
         f"{url}\n"
         f"_solve it and run `;daily done` when finished!_"
